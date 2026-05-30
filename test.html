@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional GIS Portal</title>
+  <meta name="description" content="O‘zbekiston Respublikasida yetishtirilgan don va sabzavot ekinlari yillar bo‘yicha tahlili" />
+
+  <style>
+    :root {
+      --bg: #07140d;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-dark: rgba(9, 31, 20, 0.86);
+      --green: #14532d;
+      --green-2: #16a34a;
+      --gold: #facc15;
+      --text: #0f172a;
+      --white: #ffffff;
+      --muted: #64748b;
+      --border: rgba(15, 23, 42, 0.12);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .login-screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      background:
+        linear-gradient(115deg, rgba(6, 78, 59, 0.92), rgba(20, 83, 45, 0.82)),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover;
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100vh;
+    }
+
+    .portal-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--gold), #fff7ad);
+      color: #15320d;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 0 18px 40px rgba(250, 204, 21, .28);
+    }
+
+    .portal-brand h2 {
+      font-size: 18px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .portal-brand p {
+      color: rgba(255,255,255,.76);
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .hero-content {
+      max-width: 760px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.11);
+      backdrop-filter: blur(12px);
+      color: #fef9c3;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 68px);
+      line-height: 1.02;
+      text-transform: uppercase;
+      letter-spacing: -1.4px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      max-width: 670px;
+      color: rgba(255,255,255,.84);
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      gap: 14px;
+      max-width: 760px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--gold);
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .stat-card span {
+      color: rgba(255,255,255,.8);
+      font-size: 13px;
+    }
+
+    .hero-footer {
+      color: rgba(255,255,255,.64);
+      font-size: 14px;
+    }
+
+    .login-side {
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(255,255,255,.68));
+      backdrop-filter: blur(18px);
+    }
+
+    .login-card {
+      width: min(100%, 450px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .login-card h2 {
+      color: var(--green);
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .login-card .subtitle {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #dbe3ef;
+      background: #f8fafc;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 15px 48px 15px 15px;
+      font-size: 16px;
+      outline: none;
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: var(--green-2);
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, .14);
+      background: #fff;
+    }
+
+    .eye-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 12px;
+      background: #e2e8f0;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      color: #10220c;
+      background: linear-gradient(135deg, var(--gold), #fde68a);
+      box-shadow: 0 14px 35px rgba(250, 204, 21, .35);
+      transition: .2s;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .demo-box {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .demo-box .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .copy-btn {
+      border: none;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 10px;
+      padding: 5px 9px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 13px;
+      padding: 11px;
+      border-radius: 14px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .dashboard-page {
+      display: none;
+      min-height: 100vh;
+      background: #eef3ef;
+      grid-template-rows: auto 1fr;
+    }
+
+    .portal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      background: #0f3d24;
+      color: white;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .portal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .portal-header .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      font-size: 16px;
+      box-shadow: none;
+    }
+
+    .portal-header h1 {
+      font-size: clamp(14px, 1.7vw, 24px);
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .header-btn {
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.1);
+      color: white;
+      text-decoration: none;
+      padding: 10px 13px;
+      border-radius: 13px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .header-btn.primary {
+      background: var(--gold);
+      color: #16310c;
+      border: none;
+    }
+
+    .dashboard-shell {
+      position: relative;
+      margin: 14px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid #d8e2dc;
+      background: white;
+      box-shadow: 0 16px 45px rgba(15,23,42,.12);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 105px);
+      min-height: 650px;
+      border: 0;
+    }
+
+    .loader {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(241, 245, 249, .94);
+      z-index: 5;
+      transition: .35s;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-box {
+      text-align: center;
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 14px;
+      border: 5px solid #dcfce7;
+      border-top-color: var(--green-2);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 1000px) {
+      .login-screen {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 32px 20px;
+        gap: 34px;
+      }
+
+      .login-side {
+        padding: 20px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .portal-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .hero-desc {
+        font-size: 16px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .login-card {
+        padding: 24px;
+        border-radius: 24px;
+      }
+
+      .header-actions {
+        flex-direction: column;
+      }
+
+      .header-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      iframe {
+        height: calc(100vh - 210px);
+        min-height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="login-screen" id="loginScreen">
+    <div class="hero">
+      <div class="portal-brand">
+        <div class="brand-mark">GIS</div>
+        <div>
+          <h2>Agro GIS Portal</h2>
+          <p>ArcGIS Dashboard monitoring platformasi</p>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="tag">🌾 Qishloq xo‘jaligi analitikasi</div>
+        <h1>O‘zbekiston Respublikasida yetishtirilgan <span>don va sabzavot ekinlari</span> yillar bo‘yicha tahlili</h1>
+        <p class="hero-desc">
+          Ushbu portal don va sabzavot ekinlari bo‘yicha hududiy ko‘rsatkichlarni, yillik o‘zgarishlarni va statistik tahlillarni interaktiv GIS dashboard orqali ko‘rish imkonini beradi.
+        </p>
+
+        <div class="stats">
+          <div class="stat-card"><strong>14</strong><span>Hududlar kesimi</span></div>
+          <div class="stat-card"><strong>GIS</strong><span>Xarita asosida tahlil</span></div>
+          <div class="stat-card"><strong>2</strong><span>Asosiy ekin turi</span></div>
+          <div class="stat-card"><strong>∞</strong><span>Interaktiv filterlar</span></div>
+        </div>
+      </div>
+
+      <div class="hero-footer">© Agro GIS Portal | TIIAME Dashboard</div>
+    </div>
+
+    <div class="login-side">
+      <div class="login-card">
+        <h2>Portalga kirish</h2>
+        <p class="subtitle">Dashboardni ko‘rish uchun demo login va parol orqali tizimga kiring.</p>
+
+        <form onsubmit="login(event)">
+          <div class="form-group">
+            <label for="username">Login</label>
+            <div class="input-wrap">
+              <input id="username" type="text" placeholder="Loginni kiriting" autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Parol</label>
+            <div class="input-wrap">
+              <input id="password" type="password" placeholder="Parolni kiriting" autocomplete="current-password" />
+              <button type="button" class="eye-btn" onclick="togglePassword()">👁</button>
+            </div>
+          </div>
+
+          <button class="login-btn" type="submit">Kirish</button>
+          <div class="error-message" id="errorMessage">Login yoki parol noto‘g‘ri kiritildi.</div>
+        </form>
+
+        <div class="demo-box">
+          <div class="row"><span><b>Login:</b> admin</span><button class="copy-btn" onclick="fillLogin()">Qo‘yish</button></div>
+          <div class="row"><span><b>Parol:</b> 12345</span><button class="copy-btn" onclick="fillPassword()">Qo‘yish</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="dashboard-page" id="dashboardPage">
+    <header class="portal-header">
+      <div class="portal-header-left">
+        <div class="brand-mark">GIS</div>
+        <div>
+          <h1>O‘zbekiston Respublikasida yetishtirilgan don va sabzavot ekinlari yillar bo‘yicha tahlili</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="header-btn" onclick="reloadDashboard()">⟳ Yangilash</button>
+        <button class="header-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+        <a class="header-btn primary" href="https://land-tiiame.maps.arcgis.com/apps/dashboards/2da84bbb838a419ba159f53d6c032857" target="_blank" rel="noopener noreferrer">Yangi oynada ochish</a>
+        <button class="header-btn" onclick="logout()">Chiqish</button>
+      </div>
+    </header>
+
+    <section class="dashboard-shell" id="dashboardShell">
+      <div class="loader" id="loader">
+        <div class="loader-box">
+          <div class="spinner"></div>
+          Dashboard yuklanmoqda...
+        </div>
+      </div>
+
+      <iframe
+        id="dashboardFrame"
+        src="https://land-tiiame.maps.arcgis.com/apps/dashboards/2da84bbb838a419ba159f53d6c032857"
+        title="Don va sabzavot ekinlari dashboardi"
+        allowfullscreen
+        loading="eager">
+      </iframe>
+    </section>
+  </main>
+
+  <script>
+    const LOGIN = 'admin';
+    const PASSWORD = '12345';
+
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboardPage = document.getElementById('dashboardPage');
+    const errorMessage = document.getElementById('errorMessage');
+    const loader = document.getElementById('loader');
+    const frame = document.getElementById('dashboardFrame');
+    const shell = document.getElementById('dashboardShell');
+
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (username === LOGIN && password === PASSWORD) {
+        errorMessage.style.display = 'none';
+        loginScreen.style.display = 'none';
+        dashboardPage.style.display = 'grid';
+        localStorage.setItem('agroGisPortalLogin', 'true');
+      } else {
+        errorMessage.style.display = 'block';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('agroGisPortalLogin');
+      dashboardPage.style.display = 'none';
+      loginScreen.style.display = 'grid';
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    function togglePassword() {
+      const input = document.getElementById('password');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function fillLogin() {
+      document.getElementById('username').value = LOGIN;
+    }
+
+    function fillPassword() {
+      document.getElementById('password').value = PASSWORD;
+    }
+
+    function reloadDashboard() {
+      loader.classList.remove('hidden');
+      frame.src = frame.src;
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        shell.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    }
+
+    frame.addEventListener('load', () => {
+      setTimeout(() => loader.classList.add('hidden'), 500);
+    });
+
+    if (localStorage.getItem('agroGisPortalLogin') === 'true') {
+      loginScreen.style.display = 'none';
+      dashboardPage.style.display = 'grid';
+    }
+
+    setTimeout(() => loader.classList.add('hidden'), 9000);
+  </script>
+</body>
+</html>
+        
